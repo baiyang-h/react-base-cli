@@ -1,0 +1,13 @@
+.login-container {
+  height: 100vh;
+  position: relative;
+  background: #2d3a4b;
+  .ant-form {
+    width: 350px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 27%;
+    margin: 0 auto;
+  }
+}

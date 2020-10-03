@@ -122,6 +122,15 @@ module.exports = function(webpackEnv) {
           options: {
             sourceMap: true,
           },
+        },
+        {
+          loader: 'sass-resources-loader',
+          options: {
+            resources: [
+              path.resolve(__dirname, './../src/styles/common/variable.scss'),
+              path.resolve(__dirname, './../src/styles/common/mixin.scss'),
+            ],
+          }
         }
       );
     }

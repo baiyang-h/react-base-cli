@@ -3,11 +3,11 @@
  */
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
 // import createSagaMiddleware from 'redux-saga'
-import { all } from 'redux-saga/effects'
+// import { all } from 'redux-saga/effects'
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 
-import userSaga  from './modules/user/saga'
+// import userSaga  from './modules/user/saga'
 
 import { namespace as appNamespace, appReducer } from './modules/app/reducer'
 import { namespace as userNamespace, userReducer } from './modules/user/reducer'

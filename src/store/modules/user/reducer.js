@@ -1,7 +1,17 @@
-import {handleActions} from "redux-actions";
-import { getToken } from '@/utils/token'
+import {handleActions, createAction} from "redux-actions";
+import { getToken } from '@/libs/token'
+import { resolveReducerName } from '@/libs/method'
 
 export const namespace = 'user';
+
+const LOGIN = resolveReducerName(namespace, 'LOGIN')
+const SET_USER = resolveReducerName(namespace, 'SET_USER')
+const LOGIN_OUT = resolveReducerName(namespace, 'LOGIN_OUT')
+
+// Action Creators
+export const loginActions = createAction(LOGIN)
+export const setUserActions = createAction(SET_USER)
+export const loginOutActions = createAction(LOGIN_OUT)
 
 const initState = {
   token: getToken(),
@@ -10,11 +20,11 @@ const initState = {
 };
 
 export const userReducer = handleActions({
-  LOGIN(state, action) {
+  [loginActions](state, action) {
     const { token } = action.payload
     return { ...state, token }
   },
-  GET_INFO(state, action) {
+  [setUserActions](state, action) {
     const { roles, admin } = action.payload
     return {
       ...state,
@@ -22,7 +32,7 @@ export const userReducer = handleActions({
       admin
     }
   },
-  LOGIN_OUT(state, action) {
+  [loginOutActions](state, action) {
     return {
       token: null,
       roles: [],

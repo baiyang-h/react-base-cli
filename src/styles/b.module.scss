@@ -1,0 +1,12 @@
+.b {
+  background: antiquewhite;
+}
+.bb {
+  background: red;
+}
+.cc  {
+  background: $orange;
+}
+.dd {
+  @include test(green);
+}

@@ -19,7 +19,7 @@ service.interceptors.request.use(function (config) {
 });
 
 service.interceptors.response.use(function (response) {
-
+  // ...
   return response;
 }, function (error) {
   console.log(error);

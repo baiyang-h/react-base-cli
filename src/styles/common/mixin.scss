@@ -1,0 +1,4 @@
+@mixin test($color: red) {
+  border: 3px solid $color;
+  background: red;
+}
