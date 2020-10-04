@@ -33,6 +33,7 @@ export const userReducer = handleActions({
     }
   },
   [loginOutActions](state, action) {
+    console.log(23234)
     return {
       token: null,
       roles: [],

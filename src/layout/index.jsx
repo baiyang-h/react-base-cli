@@ -3,16 +3,17 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import './index.scss'
 import { renderAppRoutes } from '@/router'
+import MyHeader from './components/Header'
 import MySider from './components/Sider'
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
 function LayoutComponent() {
   
   return <Layout>
     <MySider />
     <Layout>
-      <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
+      <MyHeader />
       <Content style={{ margin: '24px 16px 0' }}>
         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
           <Switch>

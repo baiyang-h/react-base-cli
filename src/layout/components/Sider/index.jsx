@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLocation, useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Layout, Menu } from 'antd';
@@ -79,10 +79,6 @@ function SiderComponent(props) {
   // filter 处理后 已经是 经过 权限后 得到要显示的菜单
   const getNavMenuItems = menuData => menuData.map(menuItem => getSubMenuOrItem(menuItem))
 
-  useEffect(() => {
-    
-  }, [])
-
   const handleClickMenuItem = ({ item, key, keyPath, domEvent }) => {
     history.push(key)
   }
@@ -97,7 +93,7 @@ function SiderComponent(props) {
         theme="dark" 
         mode="inline" 
         defaultSelectedKeys={defaultSelectedKeys}
-        defaultOpenKeys={['/app/permission']}
+        defaultOpenKeys={defaultSelectedKeys}
         onClick={handleClickMenuItem}
       >
         { getNavMenuItems(getPermissionNavMenu(menuData)) }

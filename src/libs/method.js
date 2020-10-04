@@ -12,6 +12,10 @@ export const resolveReducerName = (namespace, name) => join(namespace.toUpperCas
  */
 export const checkHasPermission = (authority, roles) => {
   let hasPermission = false;
+  // 如果角色是超级管理员直接都可以访问
+  if(roles.includes('admin')) {
+    return true
+  }
   if(!authority) {
     hasPermission = true
   } else {

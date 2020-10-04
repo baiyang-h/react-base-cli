@@ -18,7 +18,7 @@ export const constantRouters = [
     title: '403',
     path: '/403',
     name: '403',
-    component: dynamicWrapper('@/pages/error-page/403')
+    component: dynamicWrapper(() => import('@/pages/error-page/403'))
   },
   {
     title: '404',
