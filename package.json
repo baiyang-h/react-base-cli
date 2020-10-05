@@ -73,6 +73,7 @@
     "terser-webpack-plugin": "2.3.8",
     "ts-pnp": "1.1.6",
     "url-loader": "2.3.0",
+    "vuepress": "^1.6.0",
     "webpack": "4.42.0",
     "webpack-dev-server": "3.11.0",
     "webpack-manifest-plugin": "2.2.0",
@@ -82,7 +83,9 @@
     "analyze": "source-map-explorer build/static/js/main.*",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "eslintConfig": {
     "extends": "react-app"

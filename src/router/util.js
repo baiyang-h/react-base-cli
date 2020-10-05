@@ -13,7 +13,7 @@ export const dynamicWrapper = loader => {
 }
 
 /**
- * @description 对 menuData 菜单进行处理，生成一个新的菜单信息
+ * @description 对 menuData 菜单进行处理，生成一个新的菜单信息 1. 修改 path，补齐，2. 修改 authority，如无则继承父 
  * @param data              menuData
  * @param parentPath        父级的path
  * @param parentAuthority   父级的权限
