@@ -2,7 +2,6 @@
 
 
 
-<a name="YcNLE"></a>
 ## 分析 Bundle (包) 大小
 
 
@@ -24,13 +23,13 @@ npm run analyze
 ```
 
 
-<a name="OpSeP"></a>
 ## create-react-app脚手架中配置webpack的方法
 
-<br />
-<br />
 
-<a name="lzSV0"></a>
+
+
+
+
 ## 装饰器
 
 
@@ -39,14 +38,13 @@ npm install @babel/plugin-proposal-decorators -S
 ```
 
 
-<a name="UZ82x"></a>
 ## 样式相关
 
 
-<a name="Bv5MQ"></a>
 ### 局部样式和全局样式
 
-<br />局部样式，需要使用 `import from` 导入
+
+局部样式，需要使用 `import from` 导入
 ```css
 // a.module.css   
 .a {
@@ -80,7 +78,6 @@ export default Home
 ```
 
 
-<a name="rRTHO"></a>
 ### sass 和 less 的局部、全局配置
 
 
@@ -186,10 +183,10 @@ if (preProcessor) {
 ```
 
 
-<a name="YMREM"></a>
 ## React Router
 
-<br />安装相关依赖
+
+安装相关依赖
 ```bash
 npm i react-router react-router-dom -S
 ```
@@ -215,10 +212,10 @@ ReactDOM.render(
 ```
 
 
-<a name="wnbK1"></a>
 ## Redux 状态管理
 
-<br />安装相关依赖
+
+安装相关依赖
 ```bash
 npm install react-redux redux redux-thunk redux-promise redux-actions -S
 ```
@@ -371,14 +368,13 @@ connect(mapStateToProps, mapDispatchToProps)(App);
 ```
 
 
-<a name="umOlA"></a>
 ## redux-saga
 
 
-<a name="IsEpN"></a>
 ## browserslist 浏览器兼容配置
 
-<br />推荐使用在 `package.json` 设置，也可以使用一个 `.browserslistrc` 文件配置。
+
+推荐使用在 `package.json` 设置，也可以使用一个 `.browserslistrc` 文件配置。
 ```json
 "browserslist": {
   "production": [
@@ -395,28 +391,88 @@ connect(mapStateToProps, mapDispatchToProps)(App);
 ```
 
 
-<a name="lyJlx"></a>
 ## webpack配置
 
 
-<a name="3dJIl"></a>
 ### alias
 
-<br />别名
+
+别名
 ```javascript
 '@': path.resolve(__dirname, '../src'),
 ```
 
 
-<a name="aJijB"></a>
+## 跨域部分
+
+
+### 1. 在webpack中跨域
+
+
+使用 `yarn eject` 命令 将react-scripts中一些重要的配置文件弹射出来，然后对文件`config/webpackDevServer.js` 文件的 `poxy` 选项进行配置更改 
+```javascript
+proxy:{
+  "/api":{
+    target:"http://47.96.0.211:9000",
+      changeOrigin:true,
+        pathRewrite:{
+          "^/api":""
+        }
+  }
+},
+```
+
+
+### 2. http-proxy-middleware解决跨域
+
+
+```bash
+$ npm install http-proxy-middleware --save
+$ # 或
+$ yarn add http-proxy-middleware
+```
+接下来，创建 `src/setupProxy.js` 并将以下内容放入该文件中：
+```javascript
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function(app) {
+  // app.use(proxy('/api', { target: 'http://localhost:5000/' }));
+  app.use('/base-cli', createProxyMiddleware({ 
+    target: 'http://www.wttx56.com/mock/257',
+    changeOrigin: true,
+    pathRewrite: {
+      // '^/api/old-path': '/api/new-path', // rewrite path
+      // '^/api/remove/path': '/path', // remove base path
+    },
+    router: {
+      // when request.headers.host == 'dev.localhost:3000',
+      // override target 'http://www.example.org' to 'http://localhost:8000'
+      // 'dev.localhost:3000': 'http://localhost:8000',
+    },
+  }));
+};
+```
+
+
+### 3. 在package.json中配置
+
+
+增加下面属性
+```javascript
+"proxy": "http://localhost:4000",
+```
+
+
 ## 路由
 
-<br />与路由相关的主要有两处地方，1. 菜单，2. 路由配置。<br />
 
-<a name="hPvXa"></a>
+与路由相关的主要有两处地方，1. 菜单，2. 路由配置。
+
+
 ### menu.config.js
 
-<br />对于菜单的配置，将其写在 `menu.config.js` 文件中
+
+对于菜单的配置，将其写在 `menu.config.js` 文件中
 ```javascript
 const menuConfig = [
   {
@@ -514,7 +570,8 @@ export default menuConfig
 1. 记得菜单上配置好了，相关的路由还需要在配置文件中配置一下。
 
 
-<br />一般我们会有以下几种属性
+
+一般我们会有以下几种属性
 ```json
 {
   title: String         菜单标题
@@ -536,10 +593,10 @@ export default menuConfig
 ```
 
 
-<a name="P2f2i"></a>
 ### router.config.js
 
-<br />将路由分为了常量路由和应用路由，常量路由就类似于 Login、404、403 等，这些不需要权限验证的，开始就直接注册的路由，而应用路由就是指菜单部分的应用路由。
+
+将路由分为了常量路由和应用路由，常量路由就类似于 Login、404、403 等，这些不需要权限验证的，开始就直接注册的路由，而应用路由就是指菜单部分的应用路由。
 ```javascript
 import { dynamicWrapper } from './util'
 
@@ -640,10 +697,10 @@ export const dynamicWrapper = loader => {
 ```
 
 
-<a name="DYceE"></a>
 ### 路由核心文件
 
-<br />`router/index.js` 其中定义了一些需要用到的常用变量和方法
+
+`router/index.js` 其中定义了一些需要用到的常用变量和方法
 ```javascript
 // 对于应用 app 的公共前缀
 export const baseName = '/app'
@@ -682,10 +739,10 @@ export const renderAppRoutes = () => {
 ```
 
 
-<a name="ioDuK"></a>
 ## App初始化项目
 
-<br />我们在 App.js 文件中调用 `renderConstantRouters()` 方法进行常规路由的渲染。
+
+我们在 App.js 文件中调用 `renderConstantRouters()` 方法进行常规路由的渲染。
 ```jsx
 <Switch>
   <Route exact path='/' render={() => <Redirect to={path.join(baseName, '/home')} /> }  />
@@ -736,12 +793,13 @@ useEffect(() => {
    1. 如果不是，则是否有 roles 角色，如果无角色信息则 发送请求 获取用户信息，将角色信息、用户信息存储到 redux 中
 
 
-<br />
 
-<a name="0AZyd"></a>
+
+
 ## Layout 应用部分
 
-<br />通过 `renderAppRoutes()` 方法 来定义上 Route 标签， 根据 应用 路由来进行渲染
+
+通过 `renderAppRoutes()` 方法 来定义上 Route 标签， 根据 应用 路由来进行渲染
 ```jsx
 <Layout>
   <MySider />
@@ -760,12 +818,12 @@ useEffect(() => {
 ```
 
 
-<a name="kGP88"></a>
 ## 权限部分
 
-<br />权限部分，只要分为 菜单显示部分和路由部分<br />
 
-<a name="FEKXR"></a>
+权限部分，只要分为 菜单显示部分和路由部分
+
+
 ### 菜单权限
 
 

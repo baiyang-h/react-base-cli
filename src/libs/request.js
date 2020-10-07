@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+console.log(process.env)
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL: process.env.REACT_APP_A, // url = base url + request url
   timeout: 10000,
   headers: {
     post: {

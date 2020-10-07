@@ -9,3 +9,6 @@ export const request_getInfo = token => request({
   method: 'get',
   params: { token }
 });
+
+// 测试接口
+export const request_test = data => basePost('/base-cli/aaa', data);
