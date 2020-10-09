@@ -1,6 +1,7 @@
 # react-base-cli
 
 
+
 ## 分析 Bundle (包) 大小
 
 
@@ -22,11 +23,75 @@ npm run analyze
 ```
 
 
+
+
+## @craco/craco
+
+
+如果我们不想在暴露 webpack 配置文件的情况下，来修改项目的一些配置，那么我们需要下载 [`@craco/craco`](https://www.npmjs.com/package/@craco/craco#configuration-overview) 模块，来配置一个 `_craco.config.js_` 文件进行配置。
+```bash
+yarn add @craco/craco
+```
+
+
 ## create-react-app脚手架中配置webpack的方法
 
 
+使用 `npm run eject `暴露 webpack 配置文件，进行配置
+```bash
+npm run eject
+```
+如可以在项目目录中配置如下文件
+```javascript
+const path = require('path')
+const mockServer = require('./mock/mock-server')
+const sassResourcesLoader = require('craco-sass-resources-loader');
 
-
+module.exports = {
+    plugins: [
+        {
+            plugin: sassResourcesLoader,
+            options: {
+                resources: [
+                    path.resolve(__dirname, './src/styles/common/variable.scss'),
+                    path.resolve(__dirname, './src/styles/common/mixin.scss'),
+                ],
+            },
+        },
+    ],
+    webpack: {
+        alias: {
+            '@': path.resolve(__dirname, 'src')
+        },
+        plugins: [],
+        configure: {  },
+        // configure: (webpackConfig, { env, paths }) => {
+        //     console.log(webpackConfig)
+        //     return webpackConfig;
+        // }
+    },
+    devServer: {
+        before: function(app) {
+            mockServer(app)
+        },
+        proxy: {
+            '/base-cli': {
+                target: 'http://www.wttx56.com/mock/257',
+                // ws: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    // '^/api/old-path': '/api/new-path', // rewrite path
+                    // '^/api/remove/path': '/path', // remove base path
+                },
+                router: {
+                    // 'dev.localhost:3000': 'http://localhost:8000',
+                },
+            }
+        }
+    },
+}
+```
+使用 [`sassResourcesLoader`](https://github.com/tilap/craco-sass-resources-loader) 依赖，来配置 sass 全局变量。
 
 
 ## 装饰器
