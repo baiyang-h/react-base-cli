@@ -27,12 +27,6 @@ function App(props) {
   const location = useLocation(); 
   const history = useHistory(); 
   
-  useEffect(() => {
-    // 全局增加一个 history 对象，用于在任何地方可以直接使用 history对象
-    window.__history = history
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  
   // 登出到登录页，1. 清除相应 token，2. 清除相应 stroe，3. 跳转到 login 页
   const __loginOut = () => {
     removeToken()

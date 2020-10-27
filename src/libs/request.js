@@ -30,7 +30,7 @@ const errorHandle = r => {
         // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
         loginOutActions()
         setTimeout(() => {
-          window.__history.replace('/app/form')
+          history.replace('/login')
         }, 1000);
         break;
 

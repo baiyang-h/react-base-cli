@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+import history from "@/router/history";
 import 'antd/dist/antd.css';
 import './index.css';
 import App from './App';
@@ -11,7 +12,7 @@ import store  from './store'
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <App />
     </Router>
   </Provider>,

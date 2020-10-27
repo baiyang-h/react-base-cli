@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+
 const originData = [];
 
 for (let i = 0; i < 100; i++) {
