@@ -988,3 +988,90 @@ const getSubMenuOrItem = menuItem => {
       </Menu>
     </Sider>
 ```
+
+
+## 关于在组件外部使用 history
+
+
+在 React的组件内部使用 history，可以用以下方法：
+```javascript
+import { BrowserRouter as Router } from 'react-router-dom
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  node
+);
+
+// 方法1：直接使用外部传入props.push
+function(props) {
+	props.history.push('/')
+}
+
+// 方法2：hook useHistory
+import { useHistory } from "react-router-dom";
+function HomeButton() {
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/");
+  }
+
+  return (
+    <button type="button" onClick={handleClick}>
+      Go home
+    </button>
+  );
+}
+```
+使用 `BrowserRouter`，那么内部就可以使用路由的一些 api了， props 中就注入了一些 api， 如果没有，我们就要手动使用 `withRouter` 来进行注入。
+
+
+那么如果要在组件外部使用 history 呢？
+
+
+方案1：
+```javascript
+// history.js
+
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
+```
+```javascript
+import { Router } from "react-router";
+import history from './history'
+
+ReactDOM.render(
+  <Router history={history}>
+    <App />
+  </Router>,
+  node
+);
+/* ---------------分割线---------------- */
+
+import history from './history'
+function A(){
+	history.push('/')
+}
+```
+我们要手动创建一个 history 模式，然后注入到 Router 中。
+
+
+方案2：
+或者我们直接将 router 的 history 绑定到 window 对象上，直接通过window 来调用
+```javascript
+import { useHistory } from "react-router-dom";
+
+function App() {
+	
+  useEffect(() => {
+  	let history = useHistory();
+    // 初始化项目的时候 将 history 绑定到 window 对象上，以后需要使用，直接window 对象调用就行
+    window.__history = history      
+  }, [])
+		
+}
+```
+```javascript
+window.__history.push('/')
+```
