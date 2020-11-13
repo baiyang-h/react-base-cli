@@ -3,6 +3,18 @@ const mockServer = require('./mock/mock-server')
 const sassResourcesLoader = require('craco-sass-resources-loader');
 
 module.exports = {
+    // style: {
+    //     css: {
+    //         loaderOptions: {
+    //             sourceMap: true,
+    //         }
+    //     },
+    //     sass: {
+    //         loaderOptions: {
+    //             sourceMap: true,
+    //         }
+    //     },
+    // },
     plugins: [
         {
             plugin: sassResourcesLoader,
