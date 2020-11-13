@@ -32,6 +32,57 @@ npm run analyze
 ```bash
 yarn add @craco/craco
 ```
+一个简单的配置例子文件：
+```javascript
+const path = require('path')
+const mockServer = require('./mock/mock-server')
+const sassResourcesLoader = require('craco-sass-resources-loader');
+
+module.exports = {
+    plugins: [
+        {
+            plugin: sassResourcesLoader,
+            options: {
+                resources: [
+                  	// 设置了两个全局样式文件，直接在别的模块可以直接使用这里定义的 scss 函数、变量等
+                    path.resolve(__dirname, './src/styles/common/variable.scss'),
+                    path.resolve(__dirname, './src/styles/common/mixin.scss'),
+                ],
+            },
+        },
+    ],
+    webpack: {
+        alias: {
+            '@': path.resolve(__dirname, 'src')
+        },
+        plugins: [],
+        configure: {  },
+        // configure: (webpackConfig, { env, paths }) => {
+        //     console.log(webpackConfig)
+        //     return webpackConfig;
+        // }
+    },
+    devServer: {
+        before: function(app) {
+            mockServer(app)
+        },
+        proxy: {
+            '/base-cli': {
+                target: 'http://www.wttx56.com/mock/257',
+                // ws: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    // '^/api/old-path': '/api/new-path', // rewrite path
+                    // '^/api/remove/path': '/path', // remove base path
+                },
+                router: {
+                    // 'dev.localhost:3000': 'http://localhost:8000',
+                },
+            }
+        }
+    },
+}
+```
 
 
 ## create-react-app脚手架中配置webpack的方法
@@ -48,6 +99,18 @@ const mockServer = require('./mock/mock-server')
 const sassResourcesLoader = require('craco-sass-resources-loader');
 
 module.exports = {
+  	style: {
+        css: {
+            loaderOptions: {
+                sourceMap: true,   // 增加在控制台可以查看样式来源文件
+            }
+        },
+        sass: {
+            loaderOptions: {
+                sourceMap: true,
+            }
+        },
+    },
     plugins: [
         {
             plugin: sassResourcesLoader,
@@ -108,6 +171,14 @@ npm install @babel/plugin-proposal-decorators -S
 ### 局部样式和全局样式
 
 
+
+- 局部样式，通过 `import aa from './index'` 引入，此时 aa 就是一个局部样式的变量名
+- 全局样式，不管在哪个模块中直接使用 `import './index'` 引入的样式文件，其实都会影响到别的样式名，所以这种情况最好有一个特殊的变量名前缀。
+
+
+
+
+
 局部样式，需要使用 `import from` 导入
 ```css
 // a.module.css   
@@ -115,12 +186,30 @@ npm install @babel/plugin-proposal-decorators -S
   color: chartreuse;
 }
 ```
+或者也可以配置 `css-loader` 的配置 `modules: true`, 但这种方式，好像会使所有的文件都会变成局部变量。所以还是建议使用上面的 变量引入的方式好。
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        loader: 'css-loader',
+        options: {
+          modules: true,   
+        },
+      },
+    ],
+  },
+};
+```
 全局样式，直接通过 `import` 引入
 ```css
 .a {
   font-style: italic;
 }
 ```
+
+
 ```jsx
 import React from "react";
 import styles from '@/styles/a.module.css'   // 局部
@@ -136,7 +225,7 @@ function Home() {
 
 export default Home
 ```
-不会和其他 `.a` 类名冲突，局部样式是 `{a: "a_a__2Gw1k"}`，会自动转义成如下类名。
+局部样式不会和其他 `.a` 类名冲突，局部样式是 `{a: "a_a__2Gw1k"}`，会自动转义成如下类名。
 ```jsx
 <div class="a_a__2Gw1k"></div>
 ```
@@ -244,6 +333,29 @@ if (preProcessor) {
     }
   );
 }
+```
+
+
+### 控制台查看style文件来源
+
+
+默认情况我们查看控制台，调试样式的时候，并不能查看到样式在哪个文件，如下：
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/312064/1605249942381-bac566bf-d38d-41d9-8e0d-6723b63135a6.png#align=left&display=inline&height=264&margin=%5Bobject%20Object%5D&name=image.png&originHeight=278&originWidth=324&size=23775&status=done&style=none&width=308)
+我们可以打开 `sourceMap: true`， 这样就可以查看样式来源了，如果是 less、scss 文件，打开相应 `sourceMap` 为 `true` 就行
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
+    ],
+  },
+};
 ```
 
 

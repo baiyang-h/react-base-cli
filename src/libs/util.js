@@ -2,6 +2,8 @@
  * 通用方法
  */
 
+/******************************************** 图片相关 **********************************************************/
+
 // 下载图片或者文件
 export const download = function (url, name) {
   let eleLink = document.createElement('a');
@@ -63,6 +65,51 @@ export const downloadPicture = (url, name, type='image/png') => {
   // 获取img上的src值，赋值之后，完成之后会调用onload事件
   image.src = url
 }
+
+/******************************************** 防抖节流 **********************************************************/
+
+// func是用户传入需要防抖的函数
+// wait是等待时间
+export const debounce = (func, wait = 50) => {
+  // 缓存一个定时器id
+  let timer = 0
+  // 这里返回的函数是每次用户实际调用的防抖函数
+  // 如果已经设定过定时器了就清空上一次的定时器
+  // 开始一个新的定时器，延迟执行用户传入的方法
+  return function(...args) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, wait)
+  }
+}
+
+// 不难看出如果用户调用该函数的间隔小于wait的情况下，上一次的时间还未到就被清除了，并不会执行函数
+// 函数节流器2
+export const debouncer = (fn, time, interval = 200) => {
+  if (time - (window.debounceTimestamp || 0) > interval) {
+    fn && fn();
+    window.debounceTimestamp = time;
+  }
+}
+
+// 节流，  只有执行好后才可以执行下一次
+export function Throttle (fn, delay) {
+  let valid = true;
+  return function (params) {
+    if (!valid) {
+      return false;
+    }
+    valid = false;
+    setTimeout(() => {
+      fn(params);
+      valid = true;
+    }, delay);
+  };
+}
+
+
+/******************************************** 文字、数字转换 **********************************************************/
 
 // 将阿拉伯数字翻译成中文的大写数字
 export const numberToChinese = (num) => {
@@ -258,6 +305,8 @@ export const changeToChinese = (Num) => {
   return newchar;
 }
 
+/******************************************** 系统 **********************************************************/
+
 // 拦截粘贴板
 export const copyTextToClipboard = (value) => {
   var textArea = document.createElement("textarea");
@@ -272,6 +321,9 @@ export const copyTextToClipboard = (value) => {
   }
   document.body.removeChild(textArea);
 }
+
+
+/******************************************** 其他 **********************************************************/
 
 // 检测密码强度
 export const checkPwd = (str) => {
@@ -292,14 +344,6 @@ export const checkPwd = (str) => {
     Lv++
   }
   return Lv;
-}
-
-// 函数节流器
-export const debouncer = (fn, time, interval = 200) => {
-  if (time - (window.debounceTimestamp || 0) > interval) {
-    fn && fn();
-    window.debounceTimestamp = time;
-  }
 }
 
 // 16进制颜色转RGBRGBA字符串
