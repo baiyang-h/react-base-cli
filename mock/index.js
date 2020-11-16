@@ -1,9 +1,11 @@
 const user = require('./user');
 const table = require('./table');
+const err = require('./err')
 
 const mocks = [
   ...user,
-  ...table
+  ...table,
+  ...err
 ];
 
 module.exports = mocks;

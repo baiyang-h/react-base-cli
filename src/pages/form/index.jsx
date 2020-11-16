@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
+
 const residences = [
   {
     value: 'zhejiang',
@@ -282,7 +282,7 @@ const RegistrationForm = () => {
         {...tailFormItemLayout}
       >
         <Checkbox>
-          I have read the <a href="">agreement</a>
+          I have read the agreement
         </Checkbox>
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>

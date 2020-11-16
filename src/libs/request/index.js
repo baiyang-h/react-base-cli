@@ -58,12 +58,12 @@ service.interceptors.response.use(
     // 响应 3xx、4xx、5xx 等 走这里
     function (error) {
         // error.response  可以获取到 错误的res
-        console.log('error', error.response)
+        console.log('error', error, error.response)
 
         const { response } = error;
         if (response) {
             // 请求已发出，但是不在2xx的范围
-            // errorHandle(response);
+            errorHandle(response);
             return Promise.reject(response);
         } else {
             // 处理断网的情况
@@ -81,11 +81,12 @@ service.interceptors.response.use(
 );
 
 // 简易版 post 请求
-export const basePost = (url, data) => {
+export const basePost = (url, data, config={}) => {
     return service({
         method: "post",
         url,
         data,
+        ...config
     });
 };
 

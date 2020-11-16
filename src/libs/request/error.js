@@ -9,6 +9,7 @@ const errorHandle = r => {
 
             case 304:
                 // ...
+                message.error(304)
                 break;
 
             // 401: 未登录
@@ -35,10 +36,11 @@ const errorHandle = r => {
 
             // 404请求不存在
             case 404:
-                message.error('网络请求不存在');
+                message.error(404);
                 break;
             // 其他错误，直接抛出错误提示
             case 500:
+                message.error(500)
                 // ...
                 break;
             default:

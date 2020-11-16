@@ -19,7 +19,12 @@ function responseFake(url, type, response) {
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path);
-      res.json(Mock.mock(response(req)))
+
+      if(response(req).code === 404 || response(req).code === 500) {
+        res.status(response(req).code).send(response(req).message)
+      } else {
+        res.json(Mock.mock(response(req)))
+      }
     }
   }
 }

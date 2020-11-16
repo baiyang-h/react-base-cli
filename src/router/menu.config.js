@@ -108,7 +108,13 @@ const menuConfig = [
         name: 'Menu2',
       }
     ]
-  }
+  },
+  {
+    title: '测试请求',
+    path: 'test',
+    name: 'Test',
+    icon: '',
+  },
 ]
 
 export default menuConfig

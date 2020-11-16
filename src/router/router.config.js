@@ -42,7 +42,7 @@ export const appRouters = [
     name: 'Home',
     component: dynamicWrapper(() => import('@/pages/home'))
   },
-  
+
   // Permission
   {
     path: '/permission/page',
@@ -85,6 +85,11 @@ export const appRouters = [
   {
     path: '/nested/menu2',
     component: dynamicWrapper(() => import('@/pages/nested/menu2'))
+  },
+  // Error
+  {
+    path: '/test',
+    component: dynamicWrapper(() => import('@/pages/test'))
   },
 ]
 

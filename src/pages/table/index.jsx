@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
-import { getTableData } from '@/services'
 
 const originData = [];
 
@@ -90,12 +89,6 @@ const EditableTable = () => {
       console.log('Validate Failed:', errInfo);
     }
   };
-
-  useEffect(() => {
-    getTableData().then(r => {
-      console.log(r)
-    })
-  }, [])
 
   const columns = [
     {
