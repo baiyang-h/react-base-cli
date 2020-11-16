@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { getTableData } from '@/services'
 
 const originData = [];
 
@@ -23,7 +24,6 @@ const EditableCell = (v) => {
     children,
     ...restProps
   } = v
-  console.log(v)
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
   return (
     <td {...restProps}>
@@ -90,6 +90,12 @@ const EditableTable = () => {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  useEffect(() => {
+    getTableData().then(r => {
+      console.log(r)
+    })
+  }, [])
 
   const columns = [
     {
