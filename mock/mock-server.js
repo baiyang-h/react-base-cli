@@ -23,7 +23,13 @@ function responseFake(url, type, response) {
       if(response(req).code === 404 || response(req).code === 500) {
         res.status(response(req).code).send(response(req).message)
       } else {
-        res.json(Mock.mock(response(req)))
+        if(req.path === '/table/page-table/getTableData') {
+          setTimeout(() => {
+            res.json(Mock.mock(response(req)))
+          }, 1000)
+        } else {
+          res.json(Mock.mock(response(req)))
+        }
       }
     }
   }
