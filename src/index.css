@@ -11,3 +11,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+ul,ol,li,body,dl,dt,dd,h1,h2,h3,h4,h5,h6,textarea,input,form,div,p,span,i,a,b,strong,img,table,tr,th,td {
+  margin:0;
+  padding:0;
+}
+button {
+  outline: none;
+}
+img,input,textarea,a {
+  border:0 none;
+  outline:none;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+i {
+  font-style: normal;
+}
+.clearfix:after {
+  content:"200B";
+  display: block;
+  height:0;
+  font-size:0;
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.flex {
+  display: flex;
+}
+.flex-justify-content-right {
+  display: flex;
+  justify-content: flex-end;
+}
