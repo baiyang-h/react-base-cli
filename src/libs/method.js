@@ -1,3 +1,7 @@
+/**
+ * 项目中使用的方法
+ */
+
 import { join } from 'path'
 
 // reducer 中是名字 增加上 namespace 命名空间

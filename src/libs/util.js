@@ -1,3 +1,116 @@
+/**
+ * 通用方法
+ */
+
+/******************************************** 图片相关 **********************************************************/
+
+// 下载图片或者文件
+export const download = function (url, name) {
+  let eleLink = document.createElement('a');
+  eleLink.download = name || '下载';
+  eleLink.href = url;
+  eleLink.style.display = 'none';
+
+  document.body.appendChild(eleLink);
+  eleLink.click();
+  document.body.removeChild(eleLink);
+};
+
+// 下载文件，也许存在兼容性问题，因为某些浏览器，即使使用了 a 标签的 download 属性，但是浏览器默认就是已展示图片在浏览器中为默认，不是下载为默认，下载需要 http 中设置
+// 因此我们可以使用 转为 canvas 的方法。但是也要注意 兼容性问题
+
+/**
+ * 主要原理：利用a标签的download属性以及canvas的toDataURL()
+ * @param selector   图片的选择器
+ * @param name       被下载图片的命名
+ * @param type       图片类型
+ */
+export const downloadPicture = (url, name, type='image/png') => {
+  let image = new Image()
+  image.onload = function () {
+    // 创建一个canvas标签
+    let canvas = document.createElement('canvas')
+    // 设置canvas的宽高
+    canvas.width = image.width
+    canvas.height = image.height
+    // 获取canvas的2d界面
+    let context = canvas.getContext('2d')
+    // 把图片画在canvas上
+    context.drawImage(image, 0, 0, image.width, image.height)
+    // 把canvas的内容转化为base64格式
+    let _url = canvas.toDataURL(type)
+
+    // 生成一个a元素
+    let a = document.createElement('a')
+
+    // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
+    a.download = name || '下载图片名称'
+    // 将生成的URL设置为a.href属性
+    a.href = _url
+    // 点击
+    a.click()
+
+    /*
+    canvas.toBlob(blob => {
+      var a = document.createElement("a");
+      //a.href : blob:http://127.0.0.1:5500/fdd7df7a-c953-4a0f-a4ec-8bb9d09056d8
+      a.href = window.URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+    }, 'image/png');
+   */
+  }
+  // 解决跨域 Canvas 污染问题
+  image.setAttribute('crossOrigin', 'anonymous')
+  // 获取img上的src值，赋值之后，完成之后会调用onload事件
+  image.src = url
+}
+
+/******************************************** 防抖节流 **********************************************************/
+
+// func是用户传入需要防抖的函数
+// wait是等待时间
+export const debounce = (func, wait = 50) => {
+  // 缓存一个定时器id
+  let timer = 0
+  // 这里返回的函数是每次用户实际调用的防抖函数
+  // 如果已经设定过定时器了就清空上一次的定时器
+  // 开始一个新的定时器，延迟执行用户传入的方法
+  return function(...args) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, wait)
+  }
+}
+
+// 不难看出如果用户调用该函数的间隔小于wait的情况下，上一次的时间还未到就被清除了，并不会执行函数
+// 函数节流器2
+export const debouncer = (fn, time, interval = 200) => {
+  if (time - (window.debounceTimestamp || 0) > interval) {
+    fn && fn();
+    window.debounceTimestamp = time;
+  }
+}
+
+// 节流，  只有执行好后才可以执行下一次
+export function Throttle (fn, delay) {
+  let valid = true;
+  return function (params) {
+    if (!valid) {
+      return false;
+    }
+    valid = false;
+    setTimeout(() => {
+      fn(params);
+      valid = true;
+    }, delay);
+  };
+}
+
+
+/******************************************** 文字、数字转换 **********************************************************/
+
 // 将阿拉伯数字翻译成中文的大写数字
 export const numberToChinese = (num) => {
   var AA = new Array("零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十");
@@ -192,6 +305,8 @@ export const changeToChinese = (Num) => {
   return newchar;
 }
 
+/******************************************** 系统 **********************************************************/
+
 // 拦截粘贴板
 export const copyTextToClipboard = (value) => {
   var textArea = document.createElement("textarea");
@@ -206,6 +321,9 @@ export const copyTextToClipboard = (value) => {
   }
   document.body.removeChild(textArea);
 }
+
+
+/******************************************** 其他 **********************************************************/
 
 // 检测密码强度
 export const checkPwd = (str) => {
@@ -226,14 +344,6 @@ export const checkPwd = (str) => {
     Lv++
   }
   return Lv;
-}
-
-// 函数节流器
-export const debouncer = (fn, time, interval = 200) => {
-  if (time - (window.debounceTimestamp || 0) > interval) {
-    fn && fn();
-    window.debounceTimestamp = time;
-  }
 }
 
 // 16进制颜色转RGBRGBA字符串
@@ -260,4 +370,3 @@ export const colorToRGB = (val, opa) => {
   rgbStr = 'rgb' + (isOpa ? 'a' : '') + '(' + rgbStr + (isOpa ? ',' + opa : '') + ')';
   return rgbStr;
 }
-

@@ -20,8 +20,8 @@ module.exports = {
             plugin: sassResourcesLoader,
             options: {
                 resources: [
-                    path.resolve(__dirname, './src/styles/common/variable.scss'),
-                    path.resolve(__dirname, './src/styles/common/mixin.scss'),
+                    './src/styles/common/variable.scss',
+                    './src/styles/common/mixin.scss',
                 ],
             },
         },
