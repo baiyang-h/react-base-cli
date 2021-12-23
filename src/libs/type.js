@@ -67,3 +67,13 @@ export const isPromise = (o) => {
 export const isSet = (o) => {
   return Object.prototype.toString.call(o).slice(8, -1) === 'Set'
 }
+
+// 判断给定变量是否是未定义，当变量值为 null时，也会认为其是未定义
+export const isUndef = (v) => {
+  return v === undefined || v === null
+}
+
+// 判断给定变量是否是定义，当变量值为 null时，也会认为其是未定义
+export const isDef = (v) => {
+  return v !== undefined && v !== null
+}
