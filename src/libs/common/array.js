@@ -103,3 +103,53 @@ export const shuffle = (arr) => {
   }
   return result;
 }
+
+
+/**
+ * 求数组中相应item.id的父级，通过item的id字段名获取他的父级
+ * @param list 所有控件list
+ * @param id item的id （拖拽的控件id）
+ * @returns {*}
+ */
+export const getParent = (list, id) => {
+  // 返回null则表示为根
+  let parentItem = null
+  if(!list) return
+  if(!list.length) return
+  // 如果在根部的话就直接返回null
+  for(let item of list) {
+    if(item.id === id) return parentItem
+  }
+  const loop = (children, parent=null) => {
+    for(let child of children) {
+      if(child.id === id) {
+        parentItem = parent
+        return true
+      }
+      if(child.children && child.children.length) {
+        const f = loop(child.children, child)
+        if(f) return true
+      }
+    }
+  }
+  loop(list)
+  return parentItem
+}
+
+/**
+ * 求数组中相应id的数据
+ * @param children
+ * @param id
+ * @returns {*}
+ */
+export const getItem = (children, id) => {
+  for(let item of children) {
+    if(item.id === id) {
+      return item
+    }
+    if(item.children) {
+      const row = getItem(item.children, id)
+      if(row) return row
+    }
+  }
+}
